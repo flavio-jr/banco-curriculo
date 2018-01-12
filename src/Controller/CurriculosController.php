@@ -43,8 +43,47 @@ class CurriculosController extends Controller
 
             return new JsonResponse(['message' => 'Currículo cadastrado com sucesso!']);
         } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Erro ao cadastrar currículo']);
+            return new JsonResponse(['error' => $e->getMessage()]);
         }
+    }
 
+    /**
+     * @Route("/{id}", name="update", methods="PUT")
+     */
+    public function update($id, Request $request)
+    {
+        try {
+            $data = $this->requestJson($request);
+
+            $this->curriculoRepository->update($id, $data);
+
+            return new JsonResponse(['message' => 'Currículo atualizado com sucesso']);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods="DELETE")
+     */
+    public function delete($id)
+    {
+        try {
+            $this->curriculoRepository->delete($id);
+
+            return new JsonResponse(['message' => 'Currículo excluído com sucesso']);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @Route("/{id}", name="detail", methods="GET")
+     */
+    public function detail($id)
+    {
+        $curriculo = $this->curriculoRepository->getCurriculo($id);
+
+        return new JsonResponse(['curriculo' => $curriculo]);
     }
 }

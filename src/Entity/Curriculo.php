@@ -21,7 +21,7 @@ class Curriculo implements \JsonSerializable
 
     /**
      * @ORM\OneToOne(targetEntity="Endereco")
-     * @ORM\JoinColumn(name="endereco_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="endereco_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $endereco;
 
@@ -88,7 +88,9 @@ class Curriculo implements \JsonSerializable
             'id'           => $this->id,
             'name'         => $this->getName(),
             'sexo'         => $this->getSexo(),
+            'email'        => $this->getEmail(),
             'idade'        => $this->getIdade(),
+            'endereco'     => $this->getEndereco()->jsonSerialize(),
             'estado_civil' => $this->getEstadoCivil(),
             'telefone'     => $this->getTelefone(),
             'descricao'    => $this->getDescricao(),
@@ -113,9 +115,14 @@ class Curriculo implements \JsonSerializable
         $this->setFormacoes($data['formacao'] ?? null);
     }
 
-    public function setEndereco($endereco)
+    public function setEndereco(Endereco $endereco)
     {
         $this->endereco = $endereco;
+    }
+
+    public function getEndereco(): Endereco
+    {
+        return $this->endereco;
     }
 
     public function getName()

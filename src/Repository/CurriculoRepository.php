@@ -31,6 +31,46 @@ class CurriculoRepository extends ServiceEntityRepository
         $em->flush();
     }
 
+    public function update($curriculoId, array $data)
+    {
+        $curriculo = $this->find($curriculoId);
+
+        if (!$curriculo) {
+            throw new \Exception('Currículo não encontrado');
+        }
+
+        $curriculo->fromArray($data);
+
+        $endereco = $curriculo->getEndereco();
+
+        $endereco->fromArray($data['endereco']);
+
+        $em = $this->getEntityManager();
+
+        $em->persist($endereco);
+        $em->persist($curriculo);
+        $em->flush();
+    }
+
+    public function delete($id)
+    {
+        $curriculo = $this->find($id);
+
+        if (!$curriculo) {
+            throw new \Exception('Currículo não encontrado');
+        }
+
+        $em = $this->getEntityManager();
+        
+        $em->remove($curriculo);
+        $em->flush();
+    }
+
+    public function getCurriculo($id)
+    {
+        return $this->find($id);
+    }
+
     /*
     public function findBySomething($value)
     {

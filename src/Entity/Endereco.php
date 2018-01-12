@@ -62,6 +62,20 @@ class Endereco
         $this->setReferencia($data['referencia'] ?? null);
     }
 
+    public function jsonSerialize()
+    {
+        return [
+            'id'         => $this->getId(),
+            'pais'       => $this->getPais(),
+            'estado'     => $this->getEstado(),
+            'cidade'     => $this->getCidade(),
+            'bairro'     => $this->getBairro(),
+            'logradouro' => $this->getLogradouro(),
+            'numero'     => $this->getNumero(),
+            'referencia' => $this->getReferencia()
+        ];
+    }
+
     public function getId()
     {
         return $this->id;
